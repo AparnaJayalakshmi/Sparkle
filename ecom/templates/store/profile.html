@@ -1,0 +1,69 @@
+{% extends 'Base.html' %}
+
+{% block content %}
+<div class="row" style="padding-top:2rem;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 p-4">
+                <div class="invoice-title">
+                    <h2>Addresses</h2>
+                    <h3 class="pull-right"></h3>
+                </div>
+                <hr>
+                <div class="col-md-12">
+                  <a href="{% url 'userprofile:add_address' %}" class="btn btn-secondary text-white"><span>Add new address</span></a>
+                </div>
+                <div class="row" style="margin-top:30px;">
+                    {% for i in shippingaddress %}
+                    <div class="col-md-3">
+                      <div class="card mb-3">
+                        <div class="card-body">
+                          <h5 class="card-title">{{ i.name }}</h5>
+                          <p class="card-text">Phone: {{ i.phone }}</p>
+                          <p class="card-text">{{ i.address }}</p>
+                          <p class="card-text">{{ i.city }}</p>
+                          <p class="card-text">{{ i.state }}, {{ i.pincode }}</p>
+                  
+                          <div class="btn-group" role="group" aria-label="Address actions">
+                            <!-- Edit button -->
+                            <div class="d-flex justify-content-between">
+                              <a href="{% url 'userprofile:edit_shipping_address' i.id %}" class="btn btn-info text-white mr-3">Edit</a>
+                              
+                              <div>
+                                  <!-- Delete button -->
+                                  <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal{{ i.id }}">Delete</button>
+                              </div>
+                          </div>
+                          
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  
+                    <!-- Delete confirmation modal -->
+                    <div class="modal fade" id="deleteModal{{ i.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModal{{ i.id }}Label" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModal{{ i.id }}Label">Confirm Deletion</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <p>Are you sure you want to delete this address?</p>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <a href="{% url 'userprofile:delete_address' i.id %}" class="btn btn-danger">Delete</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {% endfor %}
+                  
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

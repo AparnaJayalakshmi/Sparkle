@@ -1,0 +1,64 @@
+{% extends 'adminpanel/adminbase.html' %}
+
+{% load static %}
+
+{% block content%}
+
+
+
+<div class="container-fluid px-4">
+  <div class="row my-5">
+    <div>
+      <h3 class="fs-4 mb-3">Category Management</h3>
+    </div>
+    <div>
+      <a class="btn btn-sm btn-outline-success float-end mb-3 " href="{% url 'addcategory' %}">Add category</a>
+    </div>
+    <div class="col">
+      <table id="categorytable" class="table bg-white rounded shadow-sm table-hover" style="width:100%">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Slug</th>
+           
+            <th>Image</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for category in category %}
+            <tr>
+              <td>{{ category.category_name }}</td>
+              <td>{{ category.slug }}</td>
+              <td><img width="50" height="50" src="{{ category.cat_image.url }}"></td>
+              <td><a class="btn btn-sm btn-primary" href="{% url 'editcategory' category.id %}">Edit</a></td>
+              <td><a class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ category.id }}">Delete</a></td>
+            </tr>
+            <!-- Modal Delete category-->
+            <div class="modal fade" id="deleteModal{{category.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"  aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document" >
+                  <div class="modal-content">
+                  <div class="modal-header">
+                      <p class="modal-title text-danger" id="exampleModalLabel">Delete Category</p>
+                  </div>
+                  <div class="modal-body ">
+                      Are You sure to delete the category?
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-sm btn-secondary" aria-label="Close" data-bs-dismiss="modal">Close</button>
+                      <a href="{% url 'deletecategory' category.id %}"><button type="button" class="btn btn-sm btn-danger">Delete</button></a>
+                  </div>
+                  </div>
+              </div>
+          </div>
+          {% endfor %}
+        </tbody>
+      </table>
+      
+      
+    </div>
+  </div>
+</div>
+
+{% endblock content%}

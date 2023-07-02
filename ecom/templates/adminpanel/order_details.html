@@ -1,0 +1,31 @@
+{% extends 'adminpanel/adminbase.html' %}
+
+{% load static %}
+
+
+{% block content %}
+<div class="container">
+  <h1>Order Details</h1>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order_item in order_items %}
+      <tr>
+        <td>{{ order_item.product.product_name }}</td>
+        <td>{{  order_item.quantity }}</td>
+        <td>{{ order_item.price }}</td>
+        <td>{{ order_item.get_total_item_price }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

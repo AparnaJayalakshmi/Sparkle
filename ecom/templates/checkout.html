@@ -1,0 +1,423 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title%}
+<link rel="stylesheet" href="{% static 'assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css' %}">
+<!-- Plugins CSS File -->
+<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/plugins/owl-carousel/owl.carousel.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/plugins/magnific-popup/magnific-popup.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/plugins/jquery.countdown.css' %}">
+<!-- Main CSS File -->
+<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/stylesheetone.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/skins/skin-demo-4.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/demos/demo-4.css' %}">
+{% endblock %}
+
+{% block content %}
+<style>
+                                              .select-css {
+                                                display: block;
+                                                font-size: 16px;
+                                                font-family: 'Open Sans', sans-serif;
+                                                font-weight: 400;
+                                                color: #555;
+                                                line-height: 1.3;
+                                                padding: .6em 1.4em .5em .8em;
+                                                width: 100%;
+                                                max-width: 100%;
+                                                box-sizing: border-box;
+                                                margin: 0;
+                                                border: 1px solid #aaa;
+                                                border-radius: .25em;
+                                                -moz-appearance: none;
+                                                -webkit-appearance: none;
+                                                appearance: none;
+                                                background-color: #fff;
+                                                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath d='M416 176H96c-26.51 0-48 21.49-48 48v64c0 26.51 21.49 48 48 48h320c26.51 0 48-21.49 48-48v-64c0-26.51-21.49-48-48-48zm-320 80h320v-32H96v32zm320 96H96c-26.51 0-48 21.49-48 48v32c0 26.51 21.49 48 48 48h320c26.51 0 48-21.49 48-48v-32c0-26.51-21.49-48-48-48zm-320 80h320v-32H96v32z'/%3E%3C/svg%3E");
+                                                background-repeat: no-repeat;
+                                                background-position: right .7em top 50%, 0 0;
+                                                background-size: .65em auto, 100%;
+                                              }
+                                              .select-css::-ms-expand {
+                                                display: none;
+                                              }
+                                              .select-css:hover {
+                                                border-color: #888;
+                                              }
+                                              .select-css:focus {
+                                                border-color: #005b9f;
+                                                box-shadow: 0 0 0 3px rgba(0, 91, 159, .2);
+                                                outline: none;
+                                              }
+                                              .select-css option {
+                                                font-weight:normal;
+                                              }
+                                            </style>
+    <main class="main">
+        <div class="page-header text-center" style="background-image: url({% static 'assets/images/page-header-bg.jpg' %})">
+            <div class="container">
+                <h1 class="page-title">Checkout</h1>
+            </div><!-- End .container -->
+        </div><!-- End .page-header -->
+        <nav aria-label="breadcrumb" class="breadcrumb-nav">
+            <div class="container">
+                
+            </div><!-- End .container -->
+        </nav><!-- End .breadcrumb-nav -->
+
+        <div class="page-content">
+            <div class="checkout">
+                <div class="container">
+
+            <form id="payment-form">
+            {% csrf_token %} 
+                      
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <h4 class="checkout-title">Billing Details</h4><!-- End .checkout-title -->
+                              <label>Select address:</label>
+
+                                    <div class="row">
+                                      {% for address in shippingaddress %}
+                                        <div class="col-md-12 mb-3">
+                                          <div class="card">
+                                            <div class="card-body">
+                                              <input class="form-check-input ml-2" type="radio" name="address"  value="{{ address.id }}" id="address{{ forloop.counter }}" {% if forloop.first %}checked{% endif %}>
+                                               <label class="form-check-label ml-5" for="address{{ forloop.counter }}">
+                                                Use this address
+                                              </label>
+                                               <h5 class="card-title">{{ address.name }}</h5> 
+                                              <p class="card-text">{{ address.address }},<br> {{ address.city }}, {{ address.state }}, {{ address.pincode }},<br>{{ address.phone }}</p>
+                                              <div class="form-check">
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                      {% endfor %}
+                                      <div class="col-md-12">
+                                        <a href="{% url 'userprofile:add_address' %}" class="btn btn-outline"><span>Add new address</span></a>
+                                      </div>
+                                    </div>
+                            </div>
+
+
+                            <aside class="col-lg-6">
+                                <div class="summary">
+                                    <h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
+
+                                    <table class="table table-summary">
+                                        <thead>
+                                            <tr>
+                                                <th >Product</th>
+                                                <th style="text-align: center">Quantity</th>
+                                                <th>Total</th>
+
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        {% for product in cart_items %}
+                                            <tr>
+                                                <td><a href="#">{{ product.product.product_name }}</a></td>
+                                                <td style="text-align: center" > x {{ product.quantity }}</td>
+                                                <td>₹{{ product.sub_total }}</td>
+
+
+                                            </tr>
+
+                                        {% endfor %}
+
+
+                                    </tbody>
+                                    </table>
+                             
+                                <hr>
+                                    <label for="coupon-code"></label><input type="text" id="coupon-code"  placeholder="Coupon code">
+                                   
+                                    <input type="button" style="border-style: none" onclick="applyCoupon(); updateData();" class="btn-md p-1 w-25 btn-primary" value="Apply">
+                                    
+                                <hr>
+                                <style>
+                                  .coupon {
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: space-between;
+                                    padding: 10px;
+                                    background-color: #f0f0f0;
+                                    margin-bottom: 10px;
+                                  }
+
+                                  .coupon .coupon-code {
+                                    font-weight: bold;
+                                  }
+
+                                  .coupon .coupon-discount {
+                                    color: #ff0000;
+                                  }
+
+                              </style>
+
+                              <a class="btn btn-sm btn-info" id="show-coupons-button">Show available coupons</a>
+
+                                  <div id="coupon-popup" style="display: none;">
+                                    <!-- Coupon content will be added here dynamically -->
+                                  </div>
+                                          
+
+                                            <hr>
+                                <h3 class="summary-title">Summary:</h3>
+
+                                <table class="summary-total" style="width: 100%;">
+                                    <tr>
+                                    <td colspan="2" style="padding-bottom: 10px;">Sub total:</td>
+                                    <td colspan="2" style="padding-bottom: 10px; text-align: right;">₹{{ total_cost }}</td>
+                                  </tr>
+                                  <tr>
+                                    {% comment %} <td colspan="2" style="padding-bottom: 10px;">Coupon applied:</td>
+                                      {% if discount %}
+                                    <td colspan="2" style="padding-bottom: 10px; text-align: right; color: green" id="coupon_discount">-₹{{ discount }}</td>
+                                      {% else %}
+                                      <td colspan="2" style="padding-bottom: 10px; text-align: right; color: green" id="coupon_discount">-₹0.00</td>
+                                      {% endif %} {% endcomment %}
+
+                                  </tr>
+                                  
+                                  <tr style="font-size: 16px; font-weight: bold;">
+                                    <td colspan="2">Grand Total:</td>
+                                    <td colspan="2" style="text-align: right;" id="costtotal">${{ total_cost }}</td>
+                                  </tr>
+                                </table>
+
+
+
+                                <hr>
+
+                                    <div class="accordion-summary" id="accordion-payment">
+
+                                        <h6>Payment Options</h6>
+
+                                            <div id="accordion-payment">
+                                                <div class="card">
+                                                    <div class="card-header" id="heading-3">
+                                                        <h2 class="card-title">
+                                                            <label>
+                                                                <input type="radio" name="payment_option"  value="cash_on_delivery">
+                                                                Cash on delivery
+                                                            </label>
+                                                        </h2>
+                                                    </div><!-- End .card-header -->
+                                                </div><!-- End .card -->
+
+                                                <div class="card">
+                                                    <div class="card-header" id="heading-4">
+                                                        <h2 class="card-title">
+                                                            <label>
+                                                                <input type="radio" name="payment_option" value="razorpay">
+                                                                Razorpay
+                                                            </label>
+                                                        </h2>
+                                                    </div><!-- End .card-header -->
+                                                </div><!-- End .card -->
+                                            </div><!-- End #accordion-payment -->
+                                        <br>
+                                        <button onclick="formSubmit(event)" class="btn btn-outline-primary-2 btn-order btn-block">Place Order</button>
+                                       
+                                    </button>
+                                </div><!-- End .summary -->
+                                </div>
+                            </aside>
+                        </div><!-- End .row -->
+             </form>
+                </div><!-- End .container -->
+            </div><!-- End .checkout -->
+        </div><!-- End .page-content -->
+    </main><!-- End .main -->
+
+   
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+ 
+  function applyCoupon(){
+    var coupon_code=document.getElementById('coupon-code').value
+    $.ajax({
+        url:"{% url 'cart:apply_coupon' %}",
+        method:"GET",
+        data:{
+            coupon_code:coupon_code,
+        },
+        success:(r) =>{
+            $('#costtotal').text("$"+r.updated_cost);
+            $('#coupon_discount').text("-₹"+r.discount);
+
+        }
+    })
+
+} 
+  function formSubmit(event) {
+    event.preventDefault();
+    const totalCostElement = document.getElementById('costtotal');
+    const totalCost = parseFloat(totalCostElement.innerText.replace('$' ,'')) * 100;
+    const paymentMethod = $('input[name="payment_option"]:checked').val();
+    console.log(totalCost)
+    if (paymentMethod === 'cash_on_delivery') {
+      $.ajax({
+        url: '{% url "cart:checkout" %}',
+        method: 'POST',
+        headers: { 'X-CSRFToken': getCookie('csrftoken') },
+        data: $('#payment-form').serialize(),
+        success: function(response) {
+          if (response.success) {
+            // Handle the successful response
+            window.location.href = '{% url "cart:order_completed" %}';
+          } else {
+            // Handle any error cases
+          }
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          // Handle the error cases
+        }
+      });
+    } else if (paymentMethod === 'razorpay') {
+      
+      const options = {
+        key: 'rzp_test_3Fn7H8WEqmzjzQ',
+        amount: totalCost,
+        currency: 'INR',
+        name: 'Acme Corp',
+        image: 'https://example.com/your_logo',
+        handler: function(response) {
+          $.ajax({
+            url: '{% url "cart:checkout" %}',
+            method: 'POST',
+            headers: { 'X-CSRFToken': getCookie('csrftoken') },
+            data: $('#payment-form').serialize(),
+            success: function(response) {
+              if (response.success) {
+                // Handle the successful response
+                window.location.href = '{% url "cart:order_completed" %}';
+              } else {
+                // Handle any error cases
+              }
+            },
+            error: function(xhr, textStatus, errorThrown) {
+              // Handle the error cases
+            }
+          });
+        },
+        theme: {
+          color: '#3399cc'
+        }
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.open();
+    
+    }
+  }
+
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+</script>
+
+<script>
+  $(document).ready(function() {
+    $('#show-coupons-button').click(function() {
+  
+      // Send an AJAX request to fetch the coupon data
+      $.ajax({
+        url: '{% url 'cart:show_coupons' %}',  // URL to your view that returns the coupon data
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+          // Handle the successful AJAX response
+          var coupons = response.coupons;
+          var couponContent = '';
+  
+          // Generate the HTML for each coupon
+          for (var i = 0; i < coupons.length; i++) {
+            {#couponContent += '<div class="coupon">' + coupons[i].code + '</div>';#}
+            // You can modify the HTML structure to fit your requirements
+              couponContent += '<div class="coupon">';
+              couponContent += '<span class="coupon-code">' + coupons[i].code + '</span>';
+              couponContent += '<span class="coupon-discount">' + coupons[i].discount_value + '</span>';
+              couponContent += '</div>';
+          }
+  
+          // Update the coupon content in the popup
+          $('#coupon-popup').html(couponContent);
+  
+          // Show the popup
+          $('#coupon-popup').show();
+        },
+        error: function(xhr, status, error) {
+          // Handle the AJAX request error
+        }
+      });
+    });
+  });
+  </script> 
+
+   <script>
+    function updateData() {
+      
+        var coupon_code=document.getElementById('coupon-code').value
+  // Make an AJAX request
+  $.ajax({
+    url: '/cart/proceed_to_pay',  // Replace with the URL of your Django endpoint
+    type: 'GET',
+    data: {
+              'coupon_code':coupon_code,
+            },
+    dataType: 'json',
+    success: function(response) {
+      // Update your HTML with the received data
+      {#$('#result').text(response.data);#}
+      $('#costtotal').text("₹"+response.total_price)
+      $('#coupon_discount').text("-₹"+response.discount);// Replace #result with the ID or class of the element you want to update
+    },
+    error: function(xhr, status, error) {
+      console.error('AJAX request failed: ' + status + ', ' + error);
+    }
+  });
+}
+
+// Call the updateData function when changes or clicks happen in your page
+$(document).ready(function() {
+  // Example 1: On button click
+  $('#myButton').click(function() {
+    updateData();
+  });
+
+  // Example 2: On input field change
+  $('#myInput').on('change', function() {
+    updateData();
+  });
+
+  // You can add more event listeners as needed
+});
+
+    </script> 
+
+
+    {% endblock %}
+    
+
+    
+       

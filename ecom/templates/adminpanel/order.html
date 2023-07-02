@@ -1,0 +1,105 @@
+{% extends 'adminpanel/adminbase.html' %}
+{% load tz %}
+{% load static %}
+
+{% block content%}
+
+<div class="container-fluid px-4">
+    <div class="row my-5">
+        <div>
+            <h3 class="fs-4 mb-3">Order Management</h3>
+            
+        </div>
+        <div>
+        </div>
+        <div class="col">
+            <table id="ordertable" class="table bg-white rounded shadow-sm  table-hover" style="width: 100%;">
+                <thead>
+                    <tr>
+                        
+                        <th>Order Id</th>
+                        <th>Date Ordered</th>
+                        
+                        <th>Status</th>
+                        
+                        <th>Details</th>
+                        <th>Edit</th>
+                        <th>Delete</th> 
+                        
+                        
+                        
+                    </tr>
+                </thead>
+    
+                
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        
+                        <td>{{order.id}}</td>
+                        <td>{{ order.created_at|timezone:"Asia/Kolkata" }}</td>
+                        
+                        <th>{{order.status}}</th>
+                        {% comment %} <th><a href="" data-bs-toggle="modal" data-bs-target="#blockModal{{order.id}}"> <small>View details</small></a></th> {% endcomment %}
+
+                        <td><a class="btn btn-sm btn-info" href="{% url 'orderdetail' order.id %}">ViewDetails</a></td>
+
+                        <td><a class="btn btn-sm btn-primary" href="{% url 'editstatus' order.id %}">Update</a></td>
+                     <td><a class="btn btn-sm btn-danger" href="{% url 'deleteorder' order.id %}">Cancel</a></td> 
+                        
+                    </tr>
+                   
+                  
+              
+                    <!-- Modal Orderitem -->
+                  
+ 
+                            <div class="modal fade" id="blockModal{{order.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <p class="modal-title text-danger fw-bold fs-4" id="exampleModalLabel">Order Details</p>
+                                    </div>
+                                    <div class="modal-body ">
+                                        {% for orderitem in order_items %}
+                                            <div class="row">
+                                                <div class="col-md-6 fw-bold">
+                                                    Item <br>
+                                                    Order id<br>
+                                                    Quantity
+                                                </div>
+                                                <div class="col-md-6">  
+                                                    {{orderitem.product.product_name}} <br>
+                                                    {{orderitem.order.id}} <br>
+                                                    {{orderitem.quantity}}
+                                                </div>
+                                            </div>
+                                            <br>
+                                        {% endfor %} 
+                                     
+                                       
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-sm btn-secondary" aria-label="Close" data-bs-dismiss="modal">Close</button>
+                                    
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                 
+                        
+                        
+                
+
+                    
+                </tbody>
+                
+            </table>
+        </div>
+ 
+    </div>
+</div>
+
+{% endblock content%}

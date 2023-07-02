@@ -1,0 +1,98 @@
+{% extends 'adminpanel/adminbase.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container-fluid px-4">
+  <div class="row my-5">
+    <h3 class="fs-4 mb-3">Customer Management</h3>
+    <div class="col">
+      <table id="customertable" class="table bg-white rounded shadow-sm  table-hover example" style="width:100%">
+
+        <thead>
+          <tr>
+          <!-- <th scope="col">#</th> -->
+          <th scope="col">Customer Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Phone</th>
+
+          <th>Block/Unblock</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          {%for customer in customers%}
+
+          
+          {% if not customer.is_superuser %}
+          <tr>
+            <td >{{customer.first_name}}</td>
+            <td>{{customer.email}}</td>
+            <td>{{customer.phone_number}}</td>
+            <td>
+          
+
+            {% if customer.is_active %}
+                                    
+              <a  class="btn btn-sm btn-outline-success"  data-bs-toggle="modal" data-bs-target="#blockModal{{customer.id}}"><i >Active</i></a>
+                                        
+            {% else %}
+                                  
+              <a class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#unblockModal{{customer.id}}">Not Active</i></a>
+                                    
+            {% endif %}
+
+            </td>
+          </tr>
+
+
+
+          <!-- Modal Block User-->
+            <div class="modal fade" id="blockModal{{customer.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <p class="modal-title text-danger" id="exampleModalLabel">Block User</p>
+                  </div>
+                  <div class="modal-body ">
+                    Are You sure to block the user?
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" aria-label="Close" data-bs-dismiss="modal">Close</button>
+                    <a href="{% url 'blockcustomer' customer.id %}"><button type="button" class="btn btn-sm btn-danger">Block</button></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal Unblock-->
+            <div class="modal fade" id="unblockModal{{customer.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <p class="modal-title text-danger" id="exampleModalLabel">Unblock User</p>
+                  </div>
+                  <div class="modal-body ">
+                    Are You sure to unblock the user?
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                    <a href="{% url 'unblockcustomer' customer.id %}"><button type="button" class="btn btn-sm btn-danger">Unblock</button></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%endif%}
+          {%endfor%}
+          
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock content%}
+
+
+
+

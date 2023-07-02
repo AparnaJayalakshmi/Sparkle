@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- ========================= SECTION PAGETOP ========================= -->
+
+<!-- ========================= SECTION INTRO END// ========================= -->
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+<div class="container">
+
+
+    <h2>Wishlist <i class="fa fa-heart text-danger"></i> </h2>
+	
+<div class="row">
+	{% if wishlist_items %}
+	{% for item in wishlist_items %}
+	<div class="col-md-4">
+		<figure class="card card-product-grid">
+			<div class="img-wrap">
+
+				<a href="#"><img src="{{ item.product.images.url }}"></a>
+
+			</div> <!-- img-wrap.// -->
+		 <figcaption class="info-wrap">
+				<div class="fix-height">
+					<a href="#" class="title">{{ item.product.product_name }}</a>
+					<div class="price-wrap mt-2">
+						<span class="price">Rs. {{ item.product.price }}</span>
+					</div> <!-- price-wrap.// -->
+				</div>
+				{% comment %} <a href="{% url 'add_to_cart' item.product.id %}" class="btn btn-dark text-white">Add to cart</a>
+				 {% endcomment %}
+				 <form id="add-to-cart-form" action="{% url 'cart:cart_add' item.product.id %}" method="post">
+					{% csrf_token %}
+					<button type="submit" class="btn btn-secondary">Add to Cart</button>
+					<a href="{% url 'store:wishlist_remove' item.product.id %}" class="btn btn-danger text-white">Remove</a>
+
+				</form>
+
+
+			</figcaption> 
+		</figure>
+	</div> <!-- col.// -->
+	{% endfor %}
+	{% else %}
+	<div>
+		<h2>No result found. Please try again.</h2>
+	</div>
+	{% endif %}
+</div> <!-- row end.// -->
+
+
+
+
+	</main> <!-- col.// -->
+
+</div>
+
+</div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+
+<script>
+    document.getElementById("add-to-cart-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent the form from submitting
+        
+        // Show SweetAlert confirmation dialog
+        Swal.fire({
+            title: "Add to Cart",
+            text: "Are you sure you want to add this item to your cart?",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // If user confirms, submit the form
+                event.target.submit();
+            }
+        });
+    });
+</script>
+
+
+{% endblock %}
+

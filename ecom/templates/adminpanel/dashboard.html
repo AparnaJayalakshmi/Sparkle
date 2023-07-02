@@ -1,0 +1,74 @@
+{% extends 'adminpanel/adminbase.html' %}
+
+{% load static %}
+
+{% block content%}
+
+  
+<div class="container-fluid px-4">
+    <div class="row g-3 my-2">
+        <div class="col-md-3">
+            <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                <div>
+                    <h3 class="fs-2">{{product.count}}</h3>
+                    <p class="fs-5">Products</p>
+                </div>
+                <i class="fas fa-gift fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                <div>
+                    <h3 class="fs-2"></h3>
+                    <p class="fs-5">Sales</p>
+                </div>
+                <i
+                    class="fas fa-hand-holding-usd fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                <div>
+                    <h3 class="fs-2"></h3>
+                    <p class="fs-5">Delivery</p>
+                </div>
+                <i class="fas fa-truck fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                <div>
+                    <h3 class="fs-2">%25</h3>
+                    <p class="fs-5">Increase</p>
+                </div>
+                <i class="fas fa-chart-line fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 h-50 bg-light rounded mt-4 p-4 " style="width:50%; height:200px;">
+            <h5 class="mt-3 fw-bold ms-3">Order - Price Report</h5>
+            <hr>
+                    <canvas class="mt-3" id="myChart2" width="400" height="200"></canvas>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                    
+                
+        </div>
+        <div class="col-md-4 h-50 bg-light rounded mt-4 p-4 " style="width:50%; height:200px;">
+            <h5 class="mt-3 fw-bold ms-3">Product - Stock Report</h5>
+            <hr>
+                    <canvas class="mt-3" id="myChart1" width="400" height="200"></canvas>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                    
+                
+        </div>
+    </div>
+
+ 
+   
+</div>
+
+{% endblock content%}
