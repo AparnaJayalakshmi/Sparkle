@@ -38,10 +38,10 @@ class Order(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     STATUS = (
-			('Pending', 'Pending'),
+	    ('Pending', 'Pending'),
             ('Confirmed', 'Confirmed'),
             ('Shipped', 'Shipped'),
-			('Delivered', 'Delivered'),
+	    ('Delivered', 'Delivered'),
             ('Cancelled', 'Cancelled'),
             ('Returned','Returned')
     )
